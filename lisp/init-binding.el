@@ -72,7 +72,7 @@
 
 (my-leader-def
   :keymaps 'normal
-  "T" 'org-roam-dailies-find-today
+  "T"'org-roam-dailies-find-today
   "n f" 'org-roam-find-file
   "n r r" 'org-roam-buffer-toggle-display
   )
