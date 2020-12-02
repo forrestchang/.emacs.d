@@ -1,0 +1,11 @@
+elpa/
+auto-save-list/
+.last-package-update-day
+.org-id-locations
+history
+recentf
+org-clock-save.el
+org-roam.db
+quelpa
+transient
+ac-comphist.dat
