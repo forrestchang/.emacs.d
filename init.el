@@ -30,15 +30,16 @@
 ;; Load packages
 (require 'init-function)
 (require 'init-package)
-(require 'init-evil)
 
 (require 'init-basic)
 (require 'init-ui)
 (require 'init-editor)
+(require 'init-company)
 
 (require 'init-org)
 (require 'init-beancount)
 
+(require 'init-evil)
 (require 'init-binding)
 
 (setq custom-file "~/.emacs.d/custom.el")

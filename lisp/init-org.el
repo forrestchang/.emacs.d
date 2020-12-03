@@ -15,6 +15,7 @@
 
 (setq org-todo-keyword-faces
       '(("TODO" . "#008891")
+        ("DONE" . "#bbbbbb")
         ("STARTED" . "#ff9642")
         ("MAYBE" . "#cdc9c3")
         ("WAITING" . "#9088d4")
@@ -244,9 +245,9 @@
           (org-ql-block '(and (clocked :on today)
                               (not (category "Routine")))
                         ((org-ql-block-header "Today Clocked")))
+          (agenda)
           (org-ql-block '(and (closed :on today))
                         ((org-ql-block-header "Today Done")))
-          (agenda)
           (org-ql-block '(and (todo "BLOCKED"))
                         ((org-ql-block-header "Blocked Tasks")))
           (org-ql-block '(and (todo "PROJ"))

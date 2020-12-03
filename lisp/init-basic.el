@@ -27,6 +27,8 @@
 
 (add-hook 'text-mode-hook #'visual-line-mode)
 
+(setq ring-bell-function 'ignore)
+
 (defvar show-paren-delay)
 (setq show-paren-delay 0.0)
 (show-paren-mode t)
@@ -87,6 +89,12 @@
   )
 
 ;; Counsel
-(use-package counsel)
+(use-package counsel
+  :config
+  (setq ivy-initial-inputs-alist nil)  ;; do not show `^' in counsel command
+  )
+
+;; Smex
+(use-package smex)
 
 (provide 'init-basic)

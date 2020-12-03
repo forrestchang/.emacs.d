@@ -1,9 +1,9 @@
 ;; init-binding.el
 
 ;; Misc
-(my-leader-def
+(map!
  :keymaps 'normal
- "SPC" 'execute-extended-command
+ "SPC" 'counsel-M-x
  "q R" 'restart-emacs
  "q q" 'kill-emacs
   )
@@ -11,14 +11,15 @@
 (global-set-key (kbd "C-c i t") 'insert-current-time)
 
 ;; Buffer
-(my-leader-def
+(map!
  :keymaps 'normal
   "TAB" 'zjy/switch-buffer
   "b b" 'counsel-switch-buffer
+  "b d" 'kill-this-buffer
   )
 
 ;; File
-(my-leader-def
+(map!
  :keymaps 'normal
   "f s" 'save-buffer
   "f f" 'counsel-find-file
@@ -26,7 +27,7 @@
   )
 
 ;; Window
-(my-leader-def
+(map!
  :keymaps 'normal
   "w m" 'delete-other-windows
   "w -" 'split-window-below
@@ -35,13 +36,13 @@
   )
 
 ;; Search
-(my-leader-def
+(map!
  :keymaps 'normal
   "s s" 'swiper
   )
 
 ;; Describe
-(my-leader-def
+(map!
  :keymaps 'normal
   "h v" 'describe-variable
   "h t" 'describe-theme
@@ -49,28 +50,31 @@
   )
 
 ;; org-mode
-(my-leader-def
+(map!
   :keymaps 'normal
   "A" (lambda () (interactive) (org-agenda nil "a"))
   "I" (lambda () (interactive) (org-capture nil "t"))
   "G" 'org-clock-goto
   )
-(my-local-leader-def
-  :states 'normal
+(localmap!
   :keymaps 'org-mode-map
+  :states '(normal visual)
+  "r r" 'org-refile
   "i" 'org-clock-in
   "o" 'org-clock-out
   "t" 'org-todo
-  "n" 'org-add-note
+  "d s" 'org-schedule
+  "d d" 'org-deadline
+  "p" 'org-priority-up
   )
 
 ;; org-roam
 (general-define-key
  :keymaps 'org-mode-map
- "C-c I" 'org-roam-insert
+ "C-c I" 'org-roam-insert-immediate
  )
 
-(my-leader-def
+(map!
   :keymaps 'normal
   "T"'org-roam-dailies-find-today
   "n f" 'org-roam-find-file

@@ -3,6 +3,9 @@
 ;; Evil Mode
 (use-package evil
   :ensure t
+  :init
+  (setq evil-want-integration t
+        evil-want-keybinding nil)
   :config
   (evil-mode 1))
 
@@ -15,22 +18,36 @@
 
 (use-package evil-org
   :ensure t
+  :after org
   :config
-  (evil-org-set-key-theme '(textobjects insert navigation additional shift todo heading))
-  (add-hook 'org-mode-hook (lambda () (evil-org-mode))))
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme)))
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys)
+  )
 
 (use-package powerline-evil
   :ensure t
   :config
   (powerline-evil-vim-color-theme))
 
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
 (use-package general
   :ensure t
   :config
-  (general-create-definer my-leader-def
-                          :prefix "SPC")
-  (general-create-definer my-local-leader-def
-                          :prefix "SPC m")
+  (general-create-definer map!
+    :prefix "SPC"
+    :state '(normal visual))
+  (general-create-definer localmap!
+    :prefix "SPC m"
+    :state '(normal visual))
   )
+
 
 (provide 'init-evil)
