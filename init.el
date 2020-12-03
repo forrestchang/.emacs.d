@@ -39,6 +39,8 @@
 (require 'init-org)
 (require 'init-beancount)
 
+(require 'init-protobuf)
+
 (require 'init-evil)
 (require 'init-binding)
 
