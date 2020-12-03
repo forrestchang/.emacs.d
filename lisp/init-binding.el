@@ -26,6 +26,12 @@
   "f r" 'counsel-buffer-or-recentf
   )
 
+;; Magit
+(map!
+  :keymaps 'normal
+  "g s" 'magit-status
+  )
+
 ;; Window
 (map!
  :keymaps 'normal

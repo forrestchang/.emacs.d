@@ -9,3 +9,5 @@ org-roam.db
 quelpa
 transient
 ac-comphist.dat
+bookmarks
+smex-items
