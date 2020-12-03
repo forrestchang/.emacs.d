@@ -2,11 +2,19 @@
 
 (load-theme 'wombat t)
 
-(use-package smart-mode-line
+;; (use-package smart-mode-line
+;;   :config
+;;   (setq sml/no-confirm-load-theme t
+;;         sml/theme 'respectful)
+;;   (sml/setup))
+
+(use-package doom-modeline
+  :init
+  :hook (after-init . doom-modeline-mode)
   :config
-  (setq sml/no-confirm-load-theme t
-        sml/theme 'respectful)
-  (sml/setup))
+  (setq doom-modeline-icon nil
+        doom-modeline-height 10)
+  )
 
 ;; Better font
 ;; https://blog.csdn.net/xh_acmagic/article/details/78939246
