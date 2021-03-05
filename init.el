@@ -40,6 +40,7 @@
 (require 'init-beancount)
 
 (require 'init-protobuf)
+(require 'init-golang)
 
 (require 'init-evil)
 (require 'init-binding)

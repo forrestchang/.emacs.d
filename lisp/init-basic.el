@@ -4,7 +4,7 @@
 (setq debug-on-error t)
 (setq-default lexical-binding t)
 
-;; Personal information
+; Personal information
 (setq user-full-name "Jiayuan")
 (setq user-main-address "forrestchang7@gmail.com")
 
@@ -12,6 +12,9 @@
 ;; Disable lockfiles and backup files
 (setq create-lockfiles nil
       make-backup-files nil)
+
+;; Turn on line number
+(global-linum-mode 1)
 
 ;; Disable auto save
 (setq auto-save-default nil)
@@ -40,7 +43,7 @@
 (custom-set-faces '(trailing-whitespace ((t (:background "dim gray")))))
 
 ;; Replace yes-or-no to y-or-n
-(fset 'yes-or-no-p 'y-or-n-p)
+;; (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Minimalize UI
 (when window-system
@@ -78,6 +81,8 @@
       (switch-to-buffer (car (evil-alternate-buffer)))
     (switch-to-buffer (other-buffer (current-buffer) t))))
 
+(use-package pyim)
+
 ;; Swipper
 (use-package swiper
   :config
@@ -96,5 +101,9 @@
 
 ;; Smex
 (use-package smex)
+
+(use-package keyfreq
+  :config (progn (keyfreq-mode 1)
+                 (keyfreq-autosave-mode 1)))
 
 (provide 'init-basic)
