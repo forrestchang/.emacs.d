@@ -1,56 +1,74 @@
-/url/cache
-/.emacs.desktop
-/auto-save-list
-/network-security.data
-/.session
-/session.*
-/custom.el
-*.elc
-CVS
-.svn
+# Created by https://www.gitignore.io/api/emacs
+# Edit at https://www.gitignore.io/?templates=emacs
+
+### Emacs ###
+# -*- mode: gitignore; -*-
 *~
-.cvsignore
-.*.lock
-/tramp
-/TODO
-/.org-id-locations
-cookies
-/newsticker
-\#*
-/elpa
-/elpa-*
-site-lisp/package/
-/swank
-/.mc-lists.el
-/var
-/.sqli_history
-/frame-restore-parameters
-/.achievements
-/.bookmarks.el
-/history
-/helm-adaptive-history
-/thumbs/
-/emms/
-/.smex-items
-/image-dired/
-/eshell
-/.cask/
-/.sx/
-/org-clock-save.el
-/ditaa*.jar
-/ido.last
-/recentf
-/viper
-/projectile-bookmarks.eld
-/anaconda-mode/
-/.historian
-/.uptimes.el
-/rake.cache
-/plantuml.jar
-/magithub
-.cache/
-/forge-database.sqlite
-/transient
-/.lsp-session-v1
-/smex-items
-/eln-cache
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Org-mode
+.org-id-locations
+*_archive
+
+# flymake-mode
+*_flymake.*
+
+# eshell files
+/eshell/history
+/eshell/lastdir
+
+# elpa packages
+/elpa/
+
+# quelpa packages
+/quelpa/
+
+# straight packages
+/straight/
+
+# reftex files
+*.rel
+
+# AUCTeX auto folder
+/auto/
+
+# cask packages
+.cask/
+dist/
+
+# Flycheck
+flycheck_*.el
+
+# server auth directory
+/server/
+
+# projectiles files
+.projectile
+
+# directory configuration
+# .dir-locals.el
+
+# network security
+/network-security.data
+
+# no-littering
+var/
+
+# native-comp
+/eln-cache/
+
+# Rime
+build/
+*.userdb/
+user.yaml
+!librime/dist/
+
+# Others
+places
+recentf
