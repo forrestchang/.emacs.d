@@ -2,6 +2,11 @@
 
 (setq user-full-name "Jiayaun")
 
+(defvar default-font "Jetbrains Mono")
+(defvar font-size 20)
+
+(set-face-attribute 'default nil :font (font-spec :family default-font :size font-size))
+
 (when (memq window-system '(mac ns))
   (setq ns-command-modifier 'hyper
         ns-pop-up-frames nil))
@@ -357,16 +362,29 @@ the unwritable tidbits."
 
 (use-package counsel
   :straight t
-  :bind
-  (("M-x" . 'counsel-M-x)
-   ("C-s" . 'swiper)
-   ("C-x C-f" . 'counsel-find-file)
-   ("C-x C-r" . 'counsel-recentf)
-   ("C-c g" . 'counsel-git)
-   ("C-c j" . 'counsel-git-grep)
-   ("C-c /" . 'counsel-ag)
-   ("C-x l" . 'counsel-locate)
-   ("C-x C-r" . 'ivy-resume)))
+  :bind*
+  (("M-x" . counsel-M-x)
+   ("C-s" . swiper)
+   ("C-x C-f" . counsel-find-file)
+   ("C-x C-r" . counsel-recentf)
+   ("C-c g" . counsel-git)
+   ("C-c j" . counsel-git-grep)
+   ("C-c /" . counsel-ag)
+   ("C-x l" . counsel-locate)
+   ("C-x C-r" . ivy-resume)))
+
+(use-package flycheck
+  :straight t
+  :init (global-flycheck-mode))
+
+(use-package company
+  :straight t
+  :config
+  (add-hook 'after-init-hook 'global-company-mode))
+
+(use-package magit
+  :straight t
+  :init (setq magit-diff-refine-hunk t))
 
 (provide 'core-config)
 ;;; core-config.el ends here
