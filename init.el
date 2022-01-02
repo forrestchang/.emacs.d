@@ -19,3 +19,5 @@
 (require 'core-config)
 (require 'core-functions)
 (require 'core-keybinds)
+
+(require 'editor-ui)

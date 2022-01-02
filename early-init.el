@@ -12,6 +12,7 @@
 ;; Package initialize occurs automatically, before `user-init-file' is
 ;; loaded, but after `early-init-file'. We handle package
 ;; initialization, so we must prevent Emacs from doing it early!
+;; Reference: https://jeffkreeftmeijer.com/emacs-straight-use-package/
 (setq package-enable-at-startup nil)
 
 ;; Inhibit resizing frame

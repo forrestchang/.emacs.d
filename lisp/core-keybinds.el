@@ -68,7 +68,7 @@
     "fj"      'dired-jump
     "fJ"      'dired-jump-other-window
     "fo"      'open-file-or-directory-in-external-app
-    "fr"      'read-only-mode
+    "fr"      'counsel-recentf
     "fR"      'rename-current-buffer-file
     "fs"      'save-buffer
     "fv"      '(:ignore t :which-key "variables")
@@ -111,9 +111,12 @@
 
     "q"       '(:ignore t :which-key "quit")
     "qd"      'restart-emacs-debug-init
-    "qr"      'restart-emacs
+    "qR"      'restart-emacs
     "qq"      'save-buffers-kill-terminal
     "qQ"      'kill-emacs
+
+    "s"       '(:ignore t :which-key "search")
+    "ss"      'swiper
 
     "T"       '(:ignore t :which-key "toggles")
     "Ta"      'auto-fill-mode
@@ -177,6 +180,8 @@
       "H-Z"   'evil-redo
       "H-C-F" 'toggle-frame-fullscreen
       "H-s"   'save-buffer
+      "H-="   'text-scale-increase
+      "H--"   'text-scale-decrease
       "H-<backspace>" (defun delete-line-before-point ()
                         (interactive)
                         (let ((prev-pos (point)))
