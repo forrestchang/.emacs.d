@@ -371,7 +371,8 @@ the unwritable tidbits."
    ("C-c j" . counsel-git-grep)
    ("C-c /" . counsel-ag)
    ("C-x l" . counsel-locate)
-   ("C-x C-r" . ivy-resume)))
+   ("C-x C-r" . ivy-resume)
+   ("<ESC>" . minibuffer-keyboard-quit)))
 
 (use-package flycheck
   :straight t

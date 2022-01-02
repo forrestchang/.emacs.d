@@ -1,3 +1,9 @@
+;;; package --- core-keybinds
+
+;;; Commentary:
+
+;;; Code:
+
 (use-package which-key
   :straight t
   :hook (after-init . which-key-mode)
@@ -59,6 +65,9 @@
     "cx"      'kill-compilation
     "c="      'indent-region-or-buffer
 
+    "e"       '(:ignore t :which-key "error")
+    "el"      'flycheck-list-errors
+
     "f"       '(:ignore t :which-key "files")
     "fC"      '(write-file :which-key "copy-file")
     "fD"      'delete-current-buffer-file
@@ -81,6 +90,10 @@
     "FD"      'delete-other-frames
     "Fn"      'make-frame
     "Fo"      'other-frame
+
+    "g"       '(:ignore t :which-key "git")
+    "gs"      'magit-status
+    "gb"      'magit-blame
 
     "h"       '(:ignore t :which-key "help")
     "ha"      'apropos-command
@@ -131,12 +144,10 @@
 
     "w"       '(:ignore t :which-key "windows")
     "w TAB"   'alternate-window
-    "w+"      'window-layout-toggle
-    "wb"      'switch-to-minibuffer-window
+    "ww"      'swap-window
     "wd"      'delete-window
     "wD"      'delete-other-windows
     "wm"      'toggle-maximize-buffer
-    "wf"      'follow-mode
     "wh"      'evil-window-left
     "wH"      'evil-window-move-far-left
     "wj"      'evil-window-down
@@ -147,13 +158,12 @@
     "wL"      'evil-window-move-far-right
     "wr"      'rotate-windows-forward
     "wR"      'rotate-windows-backward
-    "ws"      'split-window-vertically
-    "wS"      'split-window-vertically-and-focus
+    "w-"      'split-window-vertically
     "wt"      'toggle-current-window-dedication
     "wu"      'winner-undo
     "wU"      'winner-redo
-    "wv"      'split-window-horizontally
-    "wV"      'split-window-horizontally-and-focus)
+    "w|"      'split-window-horizontally
+    )
 
   (general-def
     [remap comment-dwim] 'comment-or-uncomment
