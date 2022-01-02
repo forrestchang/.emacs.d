@@ -387,5 +387,7 @@ the unwritable tidbits."
   :straight t
   :init (setq magit-diff-refine-hunk t))
 
+(use-package ace-window :straight t)
+
 (provide 'core-config)
 ;;; core-config.el ends here

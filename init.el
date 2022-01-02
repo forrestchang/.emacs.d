@@ -21,3 +21,5 @@
 (require 'core-keybinds)
 
 (require 'editor-ui)
+
+(require 'lang-solidity)

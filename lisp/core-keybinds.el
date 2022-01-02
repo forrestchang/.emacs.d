@@ -144,7 +144,7 @@
 
     "w"       '(:ignore t :which-key "windows")
     "w TAB"   'alternate-window
-    "ww"      'swap-window
+    "ww"      'ace-window
     "wd"      'delete-window
     "wD"      'delete-other-windows
     "wm"      'toggle-maximize-buffer
@@ -176,6 +176,7 @@
 
   (when (memq window-system '(mac ns))
     (general-def
+      "M-DEL" 'backward-kill-word
       "H-`"   'other-frame
       "H-a"   'mark-whole-buffer
       "H-c"   'evil-yank
