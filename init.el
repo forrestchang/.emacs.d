@@ -372,6 +372,11 @@
 	)
 
   (general-def
+	:states 'normal
+	"gb" 'evil-jump-backward
+	"gf" 'evil-jump-forward)
+
+  (general-def
 	:states '(normal visual motion)
 	"j" 'evil-next-visual-line ;; visual line instead of actual line
 	"k" 'evil-previous-visual-line
@@ -709,3 +714,19 @@
   )
 
 (use-package format-all)
+
+(use-package lsp-mode
+  :init
+  ;; Set prefix for lsp-command-keymap
+  (setq lsp-keymap-prefix "C-c l")
+  :hook
+  ((go-mode . lsp-mode))
+  :commands lsp
+  )
+
+(use-package lsp-ui :commands lsp-ui-mode)
+
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+(use-package go-mode)
