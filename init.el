@@ -311,7 +311,8 @@
 
    ;; Git
    "g" '(nil :which-key "git")
-   "gs" '(magit-status :which "git status")
+   "gs" '(magit-status :which-key "git status")
+   "gfl" '(magit-log-buffer-file :which-key "file git log")
 
    ;; Help
    "h" '(nil :which-key "help/emacs")
