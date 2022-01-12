@@ -8,23 +8,23 @@
 
 ;; Set ELPA
 (setq package-archives '(("gnu"   . "http://elpa.zilongshanren.com/gnu/")
-                           ("melpa" . "http://elpa.zilongshanren.com/melpa/")))
+                         ("melpa" . "http://elpa.zilongshanren.com/melpa/")))
 
 ;; Package list
 (setq package-list '(
-	;; Emacs
-	use-package gcmh exec-path-from-shell
-))
+					 ;; Emacs
+					 use-package gcmh exec-path-from-shell
+					 ))
 
 (package-initialize)
 (setq package-enable-at-startup nil)
 
 ;; Install packages that aren't installed
 (unless package-archive-contents
-	(package-refresh-contents))
+  (package-refresh-contents))
 (dolist (package package-list)
-	(unless
-		(package-installed-p package) (package-install package)))
+  (unless
+	  (package-installed-p package) (package-install package)))
 
 
 (require 'use-package)
@@ -82,20 +82,20 @@
   :diminish gcmh-mode
   :config
   (setq gcmh-idle-delay 5
-	gcmh-high-cons-threshold (* 16 1024 1024)) ;; 16mb
+		gcmh-high-cons-threshold (* 16 1024 1024)) ;; 16mb
   (gcmh-mode 1))
 
 (add-hook 'emacs-startup-hook
-	  (lambda ()
-	    (setq gc-cons-percentage 0.1))) ;; default value for `gc-cons-percentage`
+		  (lambda ()
+			(setq gc-cons-percentage 0.1))) ;; default value for `gc-cons-percentage`
 
 (add-hook 'emacs-startup-hook
-	  (lambda ()
-	    (message "Emacs ready in %s with %d garbage collections."
-		     (format "%.2f seconds"
-			     (float-time
-			      (time-subtract after-init-time before-init-time)))
-		     gcs-done)))
+		  (lambda ()
+			(message "Emacs ready in %s with %d garbage collections."
+					 (format "%.2f seconds"
+							 (float-time
+							  (time-subtract after-init-time before-init-time)))
+					 gcs-done)))
 
 ;; ----------------------------------------------------------------------
 ;; Load custom lisp files
@@ -148,9 +148,9 @@
   :ensure nil
   :config
   (setq show-paren-delay 0.1
-	show-paren-highlight-openparen t
-	show-paren-when-point-inside-paren t
-	show-paren-when-point-in-periphery t)
+		show-paren-highlight-openparen t
+		show-paren-when-point-inside-paren t
+		show-paren-when-point-in-periphery t)
   (show-paren-mode 1))
 
 (setq sentence-end-double-space nil)
@@ -251,10 +251,10 @@
 
   ;; Evil-like keybinds for custom-mode-map
   (evil-define-key nil 'custom-mode-map
-				   ;; moion
-				   (kbd "C-j") 'widget-forward
-				   (kbd "C-k") 'widget-backward
-				   "q" 'Custom-buffer-done)
+	;; moion
+	(kbd "C-j") 'widget-forward
+	(kbd "C-k") 'widget-backward
+	"q" 'Custom-buffer-done)
 
   ;; Kill buffer instead of hide buffer in some of those pesky modes
   (dolist (mode '(help-mode-map
@@ -301,6 +301,10 @@
    "bb" '(counsel-switch-buffer :which-key "switch buffers")
    "bd" '(evil-delete-buffer :which-key "delete buffer")
 
+   ;; Code
+   "c" '(nil :which-key "code")
+   "cf" '(format-all-buffer :which-key "format code")
+
    ;; Files
    "f" '(nil :which-key "file")
    "ff" '(counsel-find-file :which-key "find file")
@@ -325,33 +329,33 @@
 
    ;; Toggles
    "t" '(nil :which-key "toggles")
-	"tT" '(toggle-truncate-lines :which-key "truncate lines")
-	"tv" '(visual-line-mode :which-key "visual line mode")
-	"tn" '(display-line-numbers-mode :which-key "display line numbers")
-	"ta" '(mixed-pitch-mode :which-key "variable pitch mode")
-	"tc" '(visual-fill-column-mode :which-key "visual fill column mode")
-	"tt" '(counsel-load-theme :which-key "load theme")
-	"tw" '(writeroom-mode :which-key "writeroom-mode")
-	"tR" '(read-only-mode :which-key "read only mode")
-	"tr" '(display-fill-column-indicator-mode :which-key "fill column indicator")
-	"tm" '(hide-mode-line-mode :which-key "hide modeline mode")
+   "tT" '(toggle-truncate-lines :which-key "truncate lines")
+   "tv" '(visual-line-mode :which-key "visual line mode")
+   "tn" '(display-line-numbers-mode :which-key "display line numbers")
+   "ta" '(mixed-pitch-mode :which-key "variable pitch mode")
+   "tc" '(visual-fill-column-mode :which-key "visual fill column mode")
+   "tt" '(counsel-load-theme :which-key "load theme")
+   "tw" '(writeroom-mode :which-key "writeroom-mode")
+   "tR" '(read-only-mode :which-key "read only mode")
+   "tr" '(display-fill-column-indicator-mode :which-key "fill column indicator")
+   "tm" '(hide-mode-line-mode :which-key "hide modeline mode")
 
-	;; Windows
-	"w" '(nil :which-key "window")
-	"ww" '(ace-window :which-key "ace window")
-	"wd" '(evil-window-delete :which-key "delete window")
-	"wm" '(jy/toggle-maximize-buffer :which-key "maximize buffer")
-	"w-" '(jy/split-window-vertically-and-switch :which-key "split below")
-	"w/" '(jy/split-window-horizontally-and-switch :which-key "split right")
-	"wl" '(evil-window-right :which-key "evil-window-right")
-	"wh" '(evil-window-left :which-key "evil-window-left")
-	"wj" '(evil-window-down :which-key "evil-window-down")
-	"wk" '(evil-window-up :which-key "evil-window-up")
-	"wz" '(text-scale-adjust :which-key "text zoom")
+   ;; Windows
+   "w" '(nil :which-key "window")
+   "ww" '(ace-window :which-key "ace window")
+   "wd" '(evil-window-delete :which-key "delete window")
+   "wm" '(jy/toggle-maximize-buffer :which-key "maximize buffer")
+   "w-" '(jy/split-window-vertically-and-switch :which-key "split below")
+   "w/" '(jy/split-window-horizontally-and-switch :which-key "split right")
+   "wl" '(evil-window-right :which-key "evil-window-right")
+   "wh" '(evil-window-left :which-key "evil-window-left")
+   "wj" '(evil-window-down :which-key "evil-window-down")
+   "wk" '(evil-window-up :which-key "evil-window-up")
+   "wz" '(text-scale-adjust :which-key "text zoom")
 
-	;; Search
-	"s" '(nil :which-key "search")
-	"ss" '(swiper :which-key "search buffer")
+   ;; Search
+   "s" '(nil :which-key "search")
+   "ss" '(swiper :which-key "search buffer")
    ) ;; End leader prefix general.el block
 
   (general-def
@@ -383,7 +387,7 @@
 	)
 
   ;; Xwidget ------
-  ;; (general-define-key :states 'normal :keymaps 'xwidget-webkit-mode-map 
+  ;; (general-define-key :states 'normal :keymaps 'xwidget-webkit-mode-map
   ;; 					"j" 'xwidget-webkit-scroll-up-line
   ;; 					"k" 'xwidget-webkit-scroll-down-line
   ;; 						"gg" 'xwidget-webkit-scroll-top
@@ -581,9 +585,9 @@
 (setq-default line-spacing 0.00)
 
 (set-face-attribute 'default nil
- :family "Jetbrains Mono"
- :weight 'regular
- :height 180)
+					:family "Jetbrains Mono"
+					:weight 'regular
+					:height 180)
 
 (line-number-mode)
 (column-number-mode)
@@ -676,10 +680,10 @@
   :hook (prog-mode . hl-todo-mode)
   :config
   (setq hl-todo-keyword-faces
-      '(("TODO"   . "#FF0000")
-        ("FIXME"  . "#FF4500")
-        ("DEBUG"  . "#A020F0")
-        ("WIP"   . "#1E90FF"))))
+		'(("TODO"   . "#FF0000")
+          ("FIXME"  . "#FF4500")
+          ("DEBUG"  . "#A020F0")
+          ("WIP"   . "#1E90FF"))))
 
 
 (use-package magit)
@@ -693,14 +697,15 @@
   :config
   (global-git-gutter-mode +1)
 
-	;; places the git gutter outside the margins.
-	(setq-default fringes-outside-margins t)
-	;; thin fringe bitmaps
-	(define-fringe-bitmap 'git-gutter-fr:added [224]
-		nil nil '(center repeated))
-	(define-fringe-bitmap 'git-gutter-fr:modified [224]
-		nil nil '(center repeated))
-	(define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
-		nil nil 'bottom)
+  ;; places the git gutter outside the margins.
+  (setq-default fringes-outside-margins t)
+  ;; thin fringe bitmaps
+  (define-fringe-bitmap 'git-gutter-fr:added [224]
+	nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:modified [224]
+	nil nil '(center repeated))
+  (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
+	nil nil 'bottom)
   )
 
+(use-package format-all)
