@@ -304,6 +304,7 @@
    ;; Code
    "c" '(nil :which-key "code")
    "cf" '(format-all-buffer :which-key "format code")
+   "cl" '(comment-line :which-key "comment/uncomment line")
 
    ;; Files
    "f" '(nil :which-key "file")
@@ -684,7 +685,6 @@
           ("FIXME"  . "#FF4500")
           ("DEBUG"  . "#A020F0")
           ("WIP"   . "#1E90FF"))))
-
 
 (use-package magit)
 
