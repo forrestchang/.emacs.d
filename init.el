@@ -6,8 +6,9 @@
 
 (require 'package)
 
-;; ELPA and NonGNU ELPA are default in Emacs28
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+;; Set ELPA
+(setq package-archives '(("gnu"   . "http://elpa.zilongshanren.com/gnu/")
+                           ("melpa" . "http://elpa.zilongshanren.com/melpa/")))
 
 ;; Package list
 (setq package-list '(
@@ -36,6 +37,11 @@
 ;; ----------------------------------------------------------------------
 
 (setq *is-macos* (eq system-type 'darwin))
+
+(setq jy/home (concat (getenv "HOME") "/"))
+(setq jy/dropbox (concat jy/home "Dropbox/"))
+
+(setq trash-directory (concat jy/home ".Trash"))
 
 
 ;; ----------------------------------------------------------------------
@@ -217,7 +223,7 @@
   (which-key-mode)
   (which-key-setup-minibuffer)
   :config
-  (setq which-key-idle-delay 0.3))
+  (setq which-key-idle-delay 0.1))
 
 (use-package evil
   :init
@@ -303,6 +309,10 @@
    "fS" '(evil-write-all :which-key "save all buffer")
    "fo" '(reveal-in-osx-finder :which-key "reveal in finder")
 
+   ;; Git
+   "g" '(nil :which-key "git")
+   "gs" '(magit-status :which "git status")
+
    ;; Help
    "h" '(nil :which-key "help/emacs")
    "hv" '(counsel-describe-variable :which-key "describe variable")
@@ -340,9 +350,51 @@
 	;; Search
 	"s" '(nil :which-key "search")
 	"ss" '(swiper :which-key "search buffer")
-   )
+   ) ;; End leader prefix general.el block
+
+  (general-def
+	:prefix ","
+	:states 'motion
+	:keymaps 'emacs-lisp-mode-map
+	"" nil
+	"e" '(nil :which-key "eval")
+	"es" '(eval-last-sexp :which-key "eval sexp")
+	"er" '(eval-region :which-key "eval region")
+	"eb" '(eval-buffer :which-key "eval buffer")
+	"c" '(check-parens :which-key "check parens")
+	)
+
+  (general-def
+	:states '(normal visual motion)
+	"j" 'evil-next-visual-line ;; visual line instead of actual line
+	"k" 'evil-previous-visual-line
+	)
+
+  (general-def
+	:states '(insert)
+	"C-a" 'evil-beginning-of-visual-line
+	"C-e" 'evil-end-of-visual-line
+	"C-S-a" 'evil-beginning-of-line
+	"C-S-e" 'evil-end-of-line
+	"C-n" 'evil-next-visual-line
+	"C-p" 'evil-previous-visual-line
+	)
+
+  ;; Xwidget ------
+  ;; (general-define-key :states 'normal :keymaps 'xwidget-webkit-mode-map 
+  ;; 					"j" 'xwidget-webkit-scroll-up-line
+  ;; 					"k" 'xwidget-webkit-scroll-down-line
+  ;; 						"gg" 'xwidget-webkit-scroll-top
+  ;; 						"G" 'xwidget-webkit-scroll-bottom)
 
   )
+
+
+;; More configs about hydra, can refer to
+;; https://github.com/jakebox/jake-emacs
+(use-package hydra
+  :defer t)
+
 
 ;; ----------------------------------------------------------------------
 ;; Completion
@@ -368,7 +420,7 @@
         company-dabbrev-downcase nil)
 
   :config
-  (setq compand-idle-delay 0.35)
+  (setq compand-idle-delay 0.1)
   :custom-face
   (company-tooltip ((t (:family "Jetbrains Mono")))))
 
@@ -382,6 +434,13 @@
 
   ;; Shows a preview of the face in counsel-describe-face
   (add-to-list 'ivy-format-functions-alist '(counsel-describe-face . counsel--faces-format-function))
+
+  :general
+  (general-define-key
+   :keymaps '(ivy-minibuffer-map ivy-switch-buffer-map)
+   "C-k" 'ivy-previous-line
+   "C-j" 'ivy-next-line
+   )
   )
 
 (use-package all-the-icons-ivy-rich
@@ -412,4 +471,216 @@
 
   (add-to-list 'recentf-exclude
                (expand-file-name "projectile-bookmarks.eld" user-emacs-directory))
+
+  (setq-default counsel--fzf-dir jy/home)
   )
+
+(use-package prescient
+  :config
+  (setq-default history-length 1000)
+  (setq-default prescient-history-length 1000)
+  (prescient-persist-mode +1)
+  )
+
+(use-package ivy-prescient
+  :after ivy
+  :config
+  (ivy-prescient-mode +1))
+
+(use-package company-prescient
+  :defer 2
+  :after company
+  :config
+  (company-prescient-mode +1))
+
+;; From Doom Emacs
+(use-package smartparens
+  :diminish smartparens-mode
+  :defer 1
+  :config
+  ;; Load default smartparens rules for various languages
+  (require 'smartparens-config)
+  (setq sp-max-prefix-length 25)
+  (setq sp-max-pair-length 4)
+  (setq sp-highlight-pair-overlay nil
+        sp-highlight-wrap-overlay nil
+        sp-highlight-wrap-tag-overlay nil)
+
+  (with-eval-after-load 'evil
+    (setq sp-show-pair-from-inside t)
+    (setq sp-cancel-autoskip-on-backward-movement nil)
+    (setq sp-pair-overlay-keymap (make-sparse-keymap)))
+
+  (let ((unless-list '(sp-point-before-word-p
+                       sp-point-after-word-p
+                       sp-point-before-same-p)))
+    (sp-pair "'"  nil :unless unless-list)
+    (sp-pair "\"" nil :unless unless-list))
+
+  ;; In lisps ( should open a new form if before another parenthesis
+  (sp-local-pair sp-lisp-modes "(" ")" :unless '(:rem sp-point-before-same-p))
+
+  ;; Don't do square-bracket space-expansion where it doesn't make sense to
+  (sp-local-pair '(emacs-lisp-mode org-mode markdown-mode gfm-mode)
+                 "[" nil :post-handlers '(:rem ("| " "SPC")))
+
+
+  (dolist (brace '("(" "{" "["))
+    (sp-pair brace nil
+             :post-handlers '(("||\n[i]" "RET") ("| " "SPC"))
+             ;; Don't autopair opening braces if before a word character or
+             ;; other opening brace. The rationale: it interferes with manual
+             ;; balancing of braces, and is odd form to have s-exps with no
+             ;; whitespace in between, e.g. ()()(). Insert whitespace if
+             ;; genuinely want to start a new form in the middle of a word.
+             :unless '(sp-point-before-word-p sp-point-before-same-p)))
+  (smartparens-global-mode t))
+
+;; Search and replace
+(use-package evil-anzu :defer t)
+
+(use-package simpleclip
+  :config
+  (simpleclip-mode 1))
+
+(use-package undo-fu
+  :config
+  (define-key evil-normal-state-map "u" 'undo-fu-only-undo)
+  (define-key evil-normal-state-map "U" 'undo-fu-only-redo))
+
+(use-package super-save
+  :diminish super-save-mode
+  :defer 2
+  :config
+  (setq super-save-auto-save-when-idle t)
+  (setq super-save-idle-duration 5) ;; after 5 seconds of not typing autosave
+  (setq super-save-triggers ;; Functions after which buffers are saved (switching window, for example)
+        '(evil-window-next evil-window-prev balance-windows other-window))
+  (super-save-mode +1))
+
+;; After super-save autosaves, wait __ seconds and then clear the buffer. I don't like
+;; the save message just sitting in the echo area.
+(defun jy-clear-echo-area-timer ()
+  (run-at-time "2 sec" nil (lambda () (message " "))))
+
+(advice-add 'super-save-command :after 'jy-clear-echo-area-timer)
+
+;; Saveplace
+(use-package saveplace
+  :init (setq save-place-limit 100)
+  :config (save-place-mode))
+
+;; ----------------------------------------------------------------------
+;; UI
+;; ----------------------------------------------------------------------
+
+(setq text-scale-mode 1.1)
+
+(setq-default line-spacing 0.00)
+
+(set-face-attribute 'default nil
+ :family "Jetbrains Mono"
+ :weight 'regular
+ :height 180)
+
+(line-number-mode)
+(column-number-mode)
+(display-time-mode -1)
+(size-indication-mode -1)
+
+(use-package doom-modeline
+  :init (doom-modeline-mode)
+  :config
+  (setq doom-modeline-enable-word-count t
+		doom-modeline-buffer-encoding nil
+		doom-modeline-icon nil
+		doom-modeline-bar-width 3)
+  )
+
+(use-package mixed-pitch
+  :defer t
+  :config
+  (setq mixed-pitch-set-height t))
+
+(setq jy-doom-modeline-text-height 135)
+
+(use-package doom-themes
+  :after mixed-pitch
+  :custom-face
+  ;; Keep the modeline proper every time I use these themes.
+  (mode-line ((t (:height ,jy-doom-modeline-text-height))))
+  (mode-line-inactive ((t (:height ,jy-doom-modeline-text-height)))))
+
+(load-theme 'doom-one-light t)
+
+;; Line numbers, fringe, hl-line
+(setq-default fringes-outside-margins nil)
+(setq-default indicate-buffer-boundaries nil)
+(setq-default indicate-empty-lines nil)
+
+(set-face-attribute 'fringe nil :background nil)
+(set-face-attribute 'header-line nil :background nil :inherit 'default)
+
+(global-display-line-numbers-mode t)
+
+;; Disable line numbers for some modes
+(dolist (mode '(org-mode-hook
+				org-agenda-mode-hook
+				term-mode-hook
+				shell-mode-hook
+				xwidget-webkit-mode-hook
+				pdf-view-mode-hook
+				eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+(add-hook 'prog-mode-hook 'hl-line-mode)
+
+;; For writing
+(use-package visual-fill-column
+  :defer t
+  :config
+  (setq visual-fill-column-width 50
+        visual-fill-column-center-text t))
+
+(use-package writeroom-mode
+  :defer t
+  :config
+  (setq writeroom-maximize-window nil
+        writeroom-header-line "" ;; Makes sure we have a header line, that's blank
+        writeroom-mode-line t
+        writeroom-global-effects nil) ;; No need to have Writeroom do any of that silly stuff
+  (setq writeroom-width 70)
+  ;; (add-hook 'writeroom-mode-hook (lambda () (setq-local line-spacing 10)))
+  )
+
+;; ----------------------------------------------------------------------
+;; Programming
+;; ----------------------------------------------------------------------
+(use-package projectile
+  :defer t
+  :general
+  (:keymaps 'projectile-mode-map
+            "s-f" 'projectile-find-file
+            "s-p" 'projectile-command-map
+            "C-c p" 'projectile-command-map
+            "s-c" 'projectile-commander)
+  :init
+  (projectile-mode +1))
+
+(use-package rainbow-mode :defer t)
+
+(use-package hl-todo
+  :defer t
+  :hook (prog-mode . hl-todo-mode)
+  :config
+  (setq hl-todo-keyword-faces
+      '(("TODO"   . "#FF0000")
+        ("FIXME"  . "#FF4500")
+        ("DEBUG"  . "#A020F0")
+        ("WIP"   . "#1E90FF"))))
+
+
+(use-package magit)
+
+(use-package evil-collection
+  :init (evil-collection-init))
