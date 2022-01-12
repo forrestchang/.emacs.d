@@ -337,6 +337,7 @@
 
 	;; Windows
 	"w" '(nil :which-key "window")
+	"ww" '(ace-window :which-key "ace window")
 	"wd" '(evil-window-delete :which-key "delete window")
 	"wm" '(jy/toggle-maximize-buffer :which-key "maximize buffer")
 	"w-" '(jy/split-window-vertically-and-switch :which-key "split below")
@@ -684,3 +685,21 @@
 
 (use-package evil-collection
   :init (evil-collection-init))
+
+(use-package ace-window)
+
+(use-package git-gutter-fringe
+  :config
+  (global-git-gutter-mode +1)
+
+	;; places the git gutter outside the margins.
+	(setq-default fringes-outside-margins t)
+	;; thin fringe bitmaps
+	(define-fringe-bitmap 'git-gutter-fr:added [224]
+		nil nil '(center repeated))
+	(define-fringe-bitmap 'git-gutter-fr:modified [224]
+		nil nil '(center repeated))
+	(define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
+		nil nil 'bottom)
+  )
+
