@@ -394,10 +394,10 @@
 
   ;; Xwidget ------
   ;; (general-define-key :states 'normal :keymaps 'xwidget-webkit-mode-map
-  ;; 					"j" 'xwidget-webkit-scroll-up-line
-  ;; 					"k" 'xwidget-webkit-scroll-down-line
-  ;; 						"gg" 'xwidget-webkit-scroll-top
-  ;; 						"G" 'xwidget-webkit-scroll-bottom)
+  ;; 					  "j" 'xwidget-webkit-scroll-up-line
+  ;; 					  "k" 'xwidget-webkit-scroll-down-line
+  ;; 					  "gg" 'xwidget-webkit-scroll-top
+  ;; 					  "G" 'xwidget-webkit-scroll-bottom)
 
   )
 
