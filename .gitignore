@@ -75,3 +75,5 @@ recentf
 projectile-bookmarks.eld
 transient/
 tutorial/
+.cache/
+.lsp-session*
