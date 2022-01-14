@@ -223,7 +223,7 @@
   (which-key-mode)
   (which-key-setup-minibuffer)
   :config
-  (setq which-key-idle-delay 0.1))
+  (setq which-key-idle-delay 0.3))
 
 (use-package evil
   :init
@@ -374,7 +374,11 @@
   (general-def
 	:states 'normal
 	"gb" 'evil-jump-backward
-	"gf" 'evil-jump-forward)
+	"gf" 'evil-jump-forward
+	"C-n" 'evil-next-visual-line
+	"C-p" 'evil-previous-visual-line
+	"C-b" 'evil-backward-char
+	"C-f" 'evil-forward-char)
 
   (general-def
 	:states '(normal visual motion)
@@ -570,13 +574,6 @@
         '(evil-window-next evil-window-prev balance-windows other-window))
   (super-save-mode +1))
 
-;; After super-save autosaves, wait __ seconds and then clear the buffer. I don't like
-;; the save message just sitting in the echo area.
-(defun jy-clear-echo-area-timer ()
-  (run-at-time "2 sec" nil (lambda () (message " "))))
-
-(advice-add 'super-save-command :after 'jy-clear-echo-area-timer)
-
 ;; Saveplace
 (use-package saveplace
   :init (setq save-place-limit 100)
@@ -715,18 +712,28 @@
 
 (use-package format-all)
 
+;; ----------------------------------------------------------------------
+;; LSP
+;; ----------------------------------------------------------------------
+
 (use-package lsp-mode
+  :commands (lsp lsp-deferred)
   :init
-  ;; Set prefix for lsp-command-keymap
   (setq lsp-keymap-prefix "C-c l")
-  :hook
-  ((go-mode . lsp-mode))
-  :commands lsp
-  )
+  :config
+  (lsp-enable-which-key-integration t))
 
-(use-package lsp-ui :commands lsp-ui-mode)
+(use-package typescript-mode
+  :mode "\\.ts\\'"
+  :hook (typescript-mode . lsp-deferred)
+  :config
+  (setq typescript-indent-level 2))
 
-(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
-(use-package go-mode)
+(use-package go-mode
+  :init
+  (add-hook 'go-mode-hook #'lsp-deferred)
+  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
