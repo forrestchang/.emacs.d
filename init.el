@@ -1,110 +1,12 @@
 ;; -*- lexical-binding: t; -*-
 
-;; ----------------------------------------------------------------------
-;; Package
-;; ----------------------------------------------------------------------
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
-(require 'package)
-
-;; Set ELPA
-(setq package-archives '(("gnu"   . "http://elpa.zilongshanren.com/gnu/")
-                         ("melpa" . "http://elpa.zilongshanren.com/melpa/")))
-
-;; Package list
-(setq package-list '(
-					 ;; Emacs
-					 use-package gcmh exec-path-from-shell
-					 ))
-
-(package-initialize)
-(setq package-enable-at-startup nil)
-
-;; Install packages that aren't installed
-(unless package-archive-contents
-  (package-refresh-contents))
-(dolist (package package-list)
-  (unless
-	  (package-installed-p package) (package-install package)))
-
-
-(require 'use-package)
-(setq use-package-always-ensure t)
-(setq use-package-verbose nil)
-
-
-;; ----------------------------------------------------------------------
-;; Global variables and settings
-;; ----------------------------------------------------------------------
-
-(setq *is-macos* (eq system-type 'darwin))
-
-(setq jy/home (concat (getenv "HOME") "/"))
-(setq jy/dropbox (concat jy/home "Dropbox/"))
-
-(setq trash-directory (concat jy/home ".Trash"))
-
-
-;; ----------------------------------------------------------------------
-;; Global functions
-;; ----------------------------------------------------------------------
-
-(defun string-rtrim (str)
-  "Remove trailing white-space from a string."
-  (replace-regexp-in-string "[ \t\n]*$" "" str))
-
-(defun jy/split-window-vertically-and-switch ()
-  (interactive)
-  (split-window-vertically)
-  (other-window 1))
-
-(defun jy/split-window-horizontally-and-switch ()
-  (interactive)
-  (split-window-horizontally)
-  (other-window 1))
-
-;; From https://gist.github.com/3402786
-(defun jy/toggle-maximize-buffer ()
-  "Maximize buffer"
-  (interactive)
-  (if (and (= 1 (length (window-list)))
-           (assoc ?_ register-alist))
-      (jump-to-register ?_)
-    (progn
-      (window-configuration-to-register ?_)
-      (delete-other-windows))))
-
-
-;; ----------------------------------------------------------------------
-;; Garbage Collections
-;; ----------------------------------------------------------------------
-
-(use-package gcmh
-  :diminish gcmh-mode
-  :config
-  (setq gcmh-idle-delay 5
-		gcmh-high-cons-threshold (* 16 1024 1024)) ;; 16mb
-  (gcmh-mode 1))
-
-(add-hook 'emacs-startup-hook
-		  (lambda ()
-			(setq gc-cons-percentage 0.1))) ;; default value for `gc-cons-percentage`
-
-(add-hook 'emacs-startup-hook
-		  (lambda ()
-			(message "Emacs ready in %s with %d garbage collections."
-					 (format "%.2f seconds"
-							 (float-time
-							  (time-subtract after-init-time before-init-time)))
-					 gcs-done)))
-
-;; ----------------------------------------------------------------------
-;; Load custom lisp files
-;; ----------------------------------------------------------------------
-
-;; (load (expand-file-name "private.el" user-emacs-directory))
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
-
+;; Core
+(require 'init-package)
+(require 'init-variable)
+(require 'init-function)
+(require 'init-performance)
 
 ;; ----------------------------------------------------------------------
 ;; Path
@@ -690,8 +592,8 @@
 
 (use-package magit)
 
-(use-package evil-collection
-  :init (evil-collection-init))
+;; (use-package evil-collection
+;;   :init (evil-collection-init))
 
 (use-package ace-window)
 
@@ -721,7 +623,14 @@
   :init
   (setq lsp-keymap-prefix "C-c l")
   :config
-  (lsp-enable-which-key-integration t))
+  (lsp-enable-which-key-integration t)
+  (general-def
+	:states 'normal
+	:keymaps 'lsp-mode-map
+	"gd" '(lsp-find-definition :which-key "lsp-find-definition")
+	"gD" '(lsp-find-references :which-key "lsp-find-references")
+	"gb" '(lsp-ui-peek-jump-backward :which-key "lsp-jump-backward")
+	"K" '(lsp-ui-peek--show :which-key "lsp-ui-peek--show")))
 
 (use-package typescript-mode
   :mode "\\.ts\\'"
