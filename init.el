@@ -592,8 +592,8 @@
 
 (use-package magit)
 
-;; (use-package evil-collection
-;;   :init (evil-collection-init))
+(use-package evil-collection
+  :init (evil-collection-init))
 
 (use-package ace-window)
 
